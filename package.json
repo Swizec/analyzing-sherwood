@@ -1,0 +1,11 @@
+{
+    "name": "analyzing-sherwood",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:Swizec/analyzing-sherwood.git",
+    "author": "Swizec Teller <swizec@swizec.com>",
+    "license": "MIT",
+    "scripts": {
+        "buildDataset": "/usr/local/opt/python/bin/python3.7 buildDataset.py"
+    }
+}
