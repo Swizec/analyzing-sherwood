@@ -1,21 +1,46 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, { useState, useEffect } from "react"
+import * as d3 from "d3"
+import styled from "styled-components"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+import ShowNGrams from "../components/ShowNGrams"
+
+const Svg = styled.svg`
+  width: 100%;
+  height: 100vh;
+`
+
+function useDataset(path) {
+  const [data, setData] = useState()
+
+  // load data on component mount or path change
+  useEffect(() => {
+    d3.csv(path).then(rows => {
+      setData(
+        rows.map(row => ({
+          ...row,
+          count: Number(row.count),
+        }))
+      )
+    })
+  }, [path])
+
+  return data
+}
+
+const IndexPage = () => {
+  const data = useDataset("dataset.csv")
+
+  return (
+    <Layout>
+      <SEO title="Sherwood Dataviz" />
+      <Svg>
+        {data ? <ShowNGrams ngrams={data} width={1024} height={1024} /> : null}
+      </Svg>
+    </Layout>
+  )
+}
 
 export default IndexPage
