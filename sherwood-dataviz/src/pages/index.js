@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react"
 import * as d3 from "d3"
-import styled from "styled-components"
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-import ShowNGrams from "../components/ShowNGrams"
-
-const Svg = styled.svg`
-  width: 100%;
-  height: 100vh;
-`
+import VisualizeBinaryNgrams from "../components/VisualizeBinaryNgrams"
 
 function useDataset(path) {
   const [data, setData] = useState()
@@ -36,9 +30,12 @@ const IndexPage = () => {
   return (
     <Layout>
       <SEO title="Sherwood Dataviz" />
-      <Svg>
-        {data ? <ShowNGrams ngrams={data} width={1024} height={1024} /> : null}
-      </Svg>
+      <h1>Hackers leaked a 2TB dataset from Cayman National Bank</h1>
+      <p>
+        The data was trapped in virtual machines and I'm not dumb enough to run
+        those. Here is their binary composition instead.
+      </p>
+      {data ? <VisualizeBinaryNgrams ngrams={data} width={1024} /> : null}
     </Layout>
   )
 }
