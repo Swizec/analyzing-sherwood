@@ -1,6 +1,7 @@
-import React, { useMemo } from "react"
+import React, { useMemo, useRef } from "react"
 import * as d3 from "d3"
 import styled from "styled-components"
+import { Canvas, useFrame } from "react-three-fiber"
 
 const Svg = styled.svg`
   width: 100%;
@@ -8,6 +9,8 @@ const Svg = styled.svg`
 `
 
 function usePackingAlgorithm({ ngrams, width }) {
+  const center = Math.floor(width / 2)
+
   return useMemo(() => {
     const widthScale = d3
       .scaleLog()
@@ -19,12 +22,12 @@ function usePackingAlgorithm({ ngrams, width }) {
     let rows = []
 
     for (let ngram of ngrams) {
-      const ngramWidth = widthScale(ngram.count)
+      const ngramWidth = Math.floor(widthScale(ngram.count))
 
       row.push({
         ...ngram,
         width: ngramWidth,
-        x: rowWidth,
+        x: rowWidth - center,
       })
       rowWidth += ngramWidth
 
@@ -39,6 +42,30 @@ function usePackingAlgorithm({ ngrams, width }) {
   }, [ngrams, width])
 }
 
+const Bigram = ({ ngram, x, y }) => {
+  //   return (
+  //     <rect
+  //       key={`${x}, ${y}`}
+  //       x={ngram.x}
+  //       y={y * 2}
+  //       width={ngram.width}
+  //       height={2}
+  //       fill={`#00${ngram.byte}`}
+  //     />
+  //   )
+
+  //   console.log(ngram, x, y)
+
+  //   console.log(x, y)
+
+  return (
+    <mesh position={[x, y, 0]} onPointerOver={e => console.log(ngram, x, y)}>
+      <planeBufferGeometry attach="geometry" args={[ngram.width, 1]} />
+      <meshBasicMaterial attach="material" color={`#00${ngram.byte}`} />
+    </mesh>
+  )
+}
+
 const VisualizeBinaryNgrams = ({ ngrams, width }) => {
   // iterate through ngrams
   // each becomes a rectangle
@@ -49,23 +76,29 @@ const VisualizeBinaryNgrams = ({ ngrams, width }) => {
   const dataRows = usePackingAlgorithm({ ngrams, width })
 
   return (
-    <Svg height={dataRows.length * 2}>
-      <g>
-        {dataRows.map((row, y) =>
-          row.map((ngram, x) => (
-            <rect
-              key={`${x}, ${y}`}
-              x={ngram.x}
-              y={y * 2}
-              width={ngram.width}
-              height={2}
-              fill={`#00${ngram.byte}`}
-            />
-          ))
-        )}
-      </g>
-    </Svg>
+    <Canvas
+      //   style={{ width: width, height: dataRows.length * 5 }}
+      camera={{ position: [0, 0, 50] }}
+    >
+      {dataRows.map((row, y) =>
+        row.map((ngram, x) => (
+          <Bigram ngram={ngram} x={ngram.x} y={y} key={`${x}, ${y}`} />
+        ))
+      )}
+    </Canvas>
   )
+
+  //   return (
+  //     <Svg height={dataRows.length * 2}>
+  //       <g>
+  //         {dataRows.map((row, y) =>
+  //           row.map((ngram, x) => (
+
+  //           ))
+  //         )}
+  //       </g>
+  //     </Svg>
+  //   )
 }
 
 export default VisualizeBinaryNgrams

@@ -7,5 +7,9 @@
     "license": "MIT",
     "scripts": {
         "buildDataset": "/usr/local/opt/python/bin/python3.7 buildDataset.py"
+    },
+    "dependencies": {
+        "react-three-fiber": "^3.0.17",
+        "three": "^0.111.0"
     }
 }
