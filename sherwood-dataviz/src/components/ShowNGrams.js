@@ -51,6 +51,7 @@ const ShowNGrams = ({ ngrams, width, height }) => {
             y={y * 2}
             width={ngram.width}
             height={2}
+            fill={`#00${ngram.byte}`}
           />
         ))
       )}

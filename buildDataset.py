@@ -7,7 +7,7 @@ import csv
 def countByteSequences(path):
     byteCounts = {}
 
-    stopAfterSequences = 1024*1024  # 1MB*4
+    stopAfterSequences = 1024*1024  # 1MB*3
     byteSequenceSize = 2
 
     with open(path, "rb") as file:
@@ -34,7 +34,7 @@ def writeCSV(byteCounts):
         writer.writeheader()
 
         for byte in byteCounts:
-            writer.writerow({'byte': byte, 'count': byteCounts[byte]})
+            writer.writerow({'byte': byte.hex(), 'count': byteCounts[byte]})
 
 
 path = "/Volumes/Big Datasets/Sherwood/October 2019/CN-DC1.7z"
