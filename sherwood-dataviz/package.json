@@ -22,7 +22,7 @@
     "react-helmet": "^5.2.1",
     "react-three-fiber": "^3.0.17",
     "styled-components": "^4.4.1",
-    "three": "^0.111.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "prettier": "^1.19.1"
